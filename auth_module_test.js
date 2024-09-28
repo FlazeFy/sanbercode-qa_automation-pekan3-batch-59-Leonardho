@@ -2,6 +2,7 @@ import supertest from 'supertest'
 import { expect } from 'chai'
 import { faker } from '@faker-js/faker'
 const request = supertest('https://kasir-api.zelz.my.id')
+import { describe, it } from 'mocha'
 
 describe('Authorization Module', () => {
     global.testData = {
@@ -98,3 +99,12 @@ describe('Authorization Module', () => {
         global.testData.authentication = jsonData.accessToken
     });
 });
+
+// const options = {
+//     reporterOptions: {
+//         reportDir: reportDir,
+//         reportFilename: 'Api-Test_Auth-Module_Kasir-Aja',
+//         reportTitle: 'API Test - Auth Module',
+//     },
+// };
+// mochawesome.reporter('mochawesome', options);

@@ -1,0 +1,283 @@
+{
+  "stats": {
+    "suites": 3,
+    "tests": 8,
+    "passes": 6,
+    "pending": 0,
+    "failures": 2,
+    "start": "2024-09-28T01:12:27.621Z",
+    "end": "2024-09-28T01:12:30.723Z",
+    "duration": 3102,
+    "testsRegistered": 8,
+    "passPercent": 75,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "910f9e6d-8bf3-42bd-a234-0e3dd8021336",
+      "title": "",
+      "fullFile": "",
+      "file": "",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "a58f2021-1f26-427c-8bac-8c1f031b59de",
+          "title": "Authorization Module",
+          "fullFile": "/Users/leonardhorsitanggang/Documents/GitHub/sanbercode-qa_automation-pekan3-batch-59-Leonardho/auth_module_test.js",
+          "file": "/auth_module_test.js",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Should create a new account from Registration",
+              "fullTitle": "Authorization Module Should create a new account from Registration",
+              "timedOut": false,
+              "duration": 1150,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const payload = {\n    name: faker.person.firstName('male'),\n    email: faker.internet.email(),\n    password: faker.internet.password()\n};\nconsole.log(payload)\nglobal.testData.registration = payload\nconst startTime = Date.now()\nconst response = await request.post('/registration')\n    .send(payload)\n    .set('Accept', 'application/json')\n    .expect('Content-Type', /json/)\nconst responseTime = Date.now() - startTime\n// Test: Status code must be equal to 201\nexpect(response.status).to.equal(201, 'Status code must be equal to 201')\n// Test: Response time is less than 5000ms\nexpect(responseTime).to.be.below(5000, 'Response time must be below 5000ms')\n// Test: Response must be valid and have a body\nexpect(response.body).to.exist\nexpect(response.body).to.be.an('object')\n// Test: Response body must have valid format with status, message, and data\nexpect(response.body).to.have.all.keys('status', 'message', 'data')\nexpect(response.body.status).to.equal('success', 'Status must be \"success\"')\nexpect(response.body.status).to.be.a('string', 'Status must be a string')\nexpect(response.body.message).to.be.a('string', 'Message must be a string')\nexpect(response.body.data).to.be.an('object', 'Data must be an object')\n// Test: All response data should have the same value as the request payload (except password)\nObject.entries(payload).forEach(([key, value]) => {\n    if (key !== 'password') {\n        expect(response.body.data[key]).to.equal(value, `Mismatch for key: ${key} with value: ${value}`)\n    }\n});\n// Test: All response data exists and have valid data types\nexpect(response.body.data).to.have.all.keys('name', 'email')\nexpect(response.body.data.name).to.be.a('string', 'Name must be a string')\nexpect(response.body.data.email).to.be.a('string', 'Email must be a string')",
+              "err": {},
+              "uuid": "2b433a9a-920b-4e27-9fcb-f1535fe5f14b",
+              "parentUUID": "a58f2021-1f26-427c-8bac-8c1f031b59de",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Can login with registered account",
+              "fullTitle": "Authorization Module Can login with registered account",
+              "timedOut": false,
+              "duration": 1088,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const payload = {\n    email: global.testData.registration.email,\n    password: global.testData.registration.password\n};\nconst startTime = Date.now()\nconst response = await request.post('/authentications')\n    .send(payload)\n    .set('Accept', 'application/json')\n    .expect('Content-Type', /json/)\nconst responseTime = Date.now() - startTime\n// Test: Status code must be equal to 201\nexpect(response.status).to.equal(201, 'Status code must be equal to 201')\n// Test: Response time is less than 5000ms\nexpect(responseTime).to.be.below(5000, 'Response time must be below 5000ms')\n// Test: Response must be valid and have a body\nexpect(response.body).to.exist\nexpect(response.body).to.be.an('object')\n// Test: Response body must have valid format with status, message, and data\nexpect(response.body).to.have.all.keys('status', 'message', 'data')\nexpect(response.body.status).to.equal('success', 'Status must be \"success\"')\nexpect(response.body.status).to.be.a('string', 'Status must be a string')\nexpect(response.body.message).to.be.a('string', 'Message must be a string')\nexpect(response.body.data).to.be.an('object', 'Data must be an object')\nexpect(response.body.data.user).to.be.an('object', 'Data must be an object')\n// Test : Response show generated token\nconst jsonData = response.body.data \nexpect(jsonData).to.have.property('accessToken')\nexpect(jsonData).to.have.property('refreshToken')\nexpect(jsonData.accessToken).to.be.a('string', 'accessToken must be a string')\nexpect(jsonData.refreshToken).to.be.a('string', 'refreshToken must be a string')\nglobal.testData.authentication = jsonData.accessToken",
+              "err": {},
+              "uuid": "71919703-d05b-4835-9c57-195f7809507f",
+              "parentUUID": "a58f2021-1f26-427c-8bac-8c1f031b59de",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "2b433a9a-920b-4e27-9fcb-f1535fe5f14b",
+            "71919703-d05b-4835-9c57-195f7809507f"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 2238,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        },
+        {
+          "uuid": "b4732c32-f02c-46ba-81eb-45918926f626",
+          "title": "Categories Module",
+          "fullFile": "/Users/leonardhorsitanggang/Documents/GitHub/sanbercode-qa_automation-pekan3-batch-59-Leonardho/categories_module_test.js",
+          "file": "/categories_module_test.js",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Should create a new category",
+              "fullTitle": "Categories Module Should create a new category",
+              "timedOut": false,
+              "duration": 166,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const payload = {\n    name: faker.commerce.product(), \n    description: faker.lorem.lines() \n};\nconsole.log(payload)\nconst accessToken = global.testData.authentication\nconst startTime = Date.now()\nconst response = await request.post('/categories')\n    .send(payload)\n    .set('Accept', 'application/json')\n    .set('Authorization', `Bearer ${accessToken}`)\n    .expect('Content-Type', /json/)\nconst responseTime = Date.now() - startTime\n// Test: Status code must be equal to 201\nexpect(response.status).to.equal(201, 'Status code must be equal to 201')\n// Test: Response time is less than 5000ms\nexpect(responseTime).to.be.below(5000, 'Response time must be below 5000ms')\n// Test: Response must be valid and have a body\nexpect(response.body).to.exist\nexpect(response.body).to.be.an('object')\n// Test: Response body must have valid format with status, message, and data\nexpect(response.body).to.have.all.keys('status', 'message', 'data')\nexpect(response.body.status).to.equal('success', 'Status must be \"success\"')\nexpect(response.body.status).to.be.a('string', 'Status must be a string')\nexpect(response.body.message).to.be.a('string', 'Message must be a string')\nexpect(response.body.data).to.be.an('object', 'Data must be an object')\n// Test: Response category data is exist and have valid format\nconst jsonData = response.body.data \nexpect(jsonData).to.have.all.keys('categoryId','name')\nexpect(jsonData.categoryId).to.be.a('string', 'categoryId must be a string')\nexpect(jsonData.name).to.be.a('string', 'name must be a string')\n// Test: Category item have valid UUID format\nexpect(jsonData.categoryId).that.has.lengthOf(36)\nexpect((jsonData.categoryId.match(/-/g) || []).length).to.equal(4)\n\nglobal.testData.categories = jsonData.categoryId",
+              "err": {},
+              "uuid": "4bd4cefd-ba9d-4c4f-9dfd-5fd67cf7add8",
+              "parentUUID": "b4732c32-f02c-46ba-81eb-45918926f626",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Should get all categories",
+              "fullTitle": "Categories Module Should get all categories",
+              "timedOut": false,
+              "duration": 119,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "const accessToken = global.testData.authentication\nconst startTime = Date.now()\nconst response = await request.get('/categories')\n    .set('Authorization', `Bearer ${accessToken}`)\n    .expect('Content-Type', /json/)\nconst responseTime = Date.now() - startTime\n// Test: Status code must be equal to 200\nexpect(response.status).to.equal(200, 'Status code must be equal to 200')\n// Test: Response time is less than 5000ms\nexpect(responseTime).to.be.below(5000, 'Response time must be below 5000ms')\n// Test: Response must be valid and have a body\nexpect(response.body).to.exist\nexpect(response.body).to.be.an('object')\n// Test: Response body must have valid format with status and data\nexpect(response.body).to.have.all.keys('status', 'data')\nexpect(response.body.status).to.equal('success', 'Status must be \"success\"')\nexpect(response.body.status).to.be.a('string', 'Status must be a string')\nexpect(response.body.data).to.be.an('object', 'Data must be an object')\nexpect(response.body.data.categories).to.be.an('array', 'Categories must be an array')\nexpect(response.body.data.meta).to.be.an('object', 'Meta must be an object')\n// Test: Response body have meta the props of get api\nconst jsonData = response.body.data.meta\nexpect(jsonData).to.have.all.keys('totalPage','total','page')\nexpect(jsonData.totalPage).to.be.a('number', 'totalPage must be a number')\nexpect(jsonData.total).to.be.a('number', 'total must be a number')\nexpect(jsonData.page).to.be.a('number', 'page must be a number')\nexpect(jsonData.totalPage).to.be.at.least(0)\nexpect(jsonData.total).to.be.at.least(0)\nexpect(jsonData.page).to.be.at.least(0)\n// Test: Categories item have valid key and value\nconst jsonCat = response.body.data.categories\nfor(let i = 0; i < jsonCat.length; i++){\n    expect(jsonCat[i].id).to.be.a('string')\n    expect(jsonCat[i].name).to.be.a('string')\n    expect(jsonCat[i].description).to.satisfy(function(val) {\n        return typeof val == 'string' || val == null\n    });\n}\n// Test: Categories item have valid UUID format\nfor(let i = 0; i < jsonCat.length; i++){\n    expect(jsonCat[i].id).that.has.lengthOf(36)\n    expect((jsonCat[i].id.match(/-/g) || []).length).to.equal(4)\n}",
+              "err": {
+                "message": "AssertionError: expected { totalPages: 1, total: '2', page: 1 } to have keys 'totalPage', 'total', and 'page'",
+                "estack": "AssertionError: expected { totalPages: 1, total: '2', page: 1 } to have keys 'totalPage', 'total', and 'page'\n    at Context.<anonymous> (file:///Users/leonardhorsitanggang/Documents/GitHub/sanbercode-qa_automation-pekan3-batch-59-Leonardho/categories_module_test.js:88:38)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)",
+                "diff": " [\n   \"page\"\n   \"total\"\n-   \"totalPages\"\n+   \"totalPage\"\n ]\n"
+              },
+              "uuid": "a6ca4129-3092-47a4-99f5-f7d6fcf30c17",
+              "parentUUID": "b4732c32-f02c-46ba-81eb-45918926f626",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "4bd4cefd-ba9d-4c4f-9dfd-5fd67cf7add8"
+          ],
+          "failures": [
+            "a6ca4129-3092-47a4-99f5-f7d6fcf30c17"
+          ],
+          "pending": [],
+          "skipped": [],
+          "duration": 285,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        },
+        {
+          "uuid": "c8a8372e-88d9-426b-a294-3f419aef9ec3",
+          "title": "Product Module",
+          "fullFile": "/Users/leonardhorsitanggang/Documents/GitHub/sanbercode-qa_automation-pekan3-batch-59-Leonardho/product_module_test.js",
+          "file": "/product_module_test.js",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Should create a new product",
+              "fullTitle": "Product Module Should create a new product",
+              "timedOut": false,
+              "duration": 199,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const payload = {\n    category_id : global.testData.categories,\n    code: faker.string.nanoid(9).toUpperCase(),\n    name: faker.commerce.product(),\n    price: faker.number.int({min:1000,max:10000}).toString(),\n    cost: faker.number.int({min:1000,max:10000}).toString(),\n    stock: faker.number.int({min:1,max:99}).toString()\n};\nconsole.log(payload)\nconst accessToken = global.testData.authentication\nconst startTime = Date.now()\nconst response = await request.post('/products')\n    .send(payload)\n    .set('Accept', 'application/json')\n    .set('Authorization', `Bearer ${accessToken}`)\n    .expect('Content-Type', /json/)\nconst responseTime = Date.now() - startTime\n// Test: Status code must be equal to 201\nexpect(response.status).to.equal(201, 'Status code must be equal to 201')\n// Test: Response time is less than 5000ms\nexpect(responseTime).to.be.below(5000, 'Response time must be below 5000ms')\n// Test: Response must be valid and have a body\nexpect(response.body).to.exist\nexpect(response.body).to.be.an('object')\n// Test: Response body must have valid format with status, message, and data\nexpect(response.body).to.have.all.keys('status', 'message', 'data')\nexpect(response.body.status).to.equal('success', 'Status must be \"success\"')\nexpect(response.body.status).to.be.a('string', 'Status must be a string')\nexpect(response.body.message).to.be.a('string', 'Message must be a string')\nexpect(response.body.data).to.be.an('object', 'Data must be an object')\n// Test: Response product data is exist and have valid format\nconst jsonData = response.body.data \nexpect(jsonData).to.have.all.keys('productId','name')\nexpect(jsonData.productId).to.be.a('string')\nexpect(jsonData.name).to.be.a('string')\n// Test: Product item have valid UUID format\nexpect(jsonData.productId).that.has.lengthOf(36)\nexpect((jsonData.productId.match(/-/g) || []).length).to.equal(4)\n\nglobal.testData.product = jsonData.productId",
+              "err": {},
+              "uuid": "fd72208f-fef2-4451-b5f1-bf19adf7ae00",
+              "parentUUID": "c8a8372e-88d9-426b-a294-3f419aef9ec3",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Should get all product",
+              "fullTitle": "Product Module Should get all product",
+              "timedOut": false,
+              "duration": 119,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "const accessToken = global.testData.authentication\nconst startTime = Date.now()\nconst response = await request.get('/products')\n    .set('Authorization', `Bearer ${accessToken}`)\n    .expect('Content-Type', /json/)\nconst responseTime = Date.now() - startTime\n// Test: Status code must be equal to 200\nexpect(response.status).to.equal(200, 'Status code must be equal to 200')\n// Test: Response time is less than 5000ms\nexpect(responseTime).to.be.below(5000, 'Response time must be below 5000ms')\n// Test: Response must be valid and have a body\nexpect(response.body).to.exist\nexpect(response.body).to.be.an('object')\n// Test: Response body have valid format who have status and data\nconst jsonData = response.body\n    \nexpect(jsonData).to.have.all.keys('status','data')\nexpect(jsonData.status).to.eql(\"success\", 'Status must be \"success\"')\nexpect(jsonData.status).to.be.a('string', 'Status must be a string')\nexpect(jsonData.data).to.be.an('object', 'data must be an object')\nexpect(jsonData.data.products).to.be.an('array', 'product must be an array')\nexpect(jsonData.data.meta).to.be.an('object', 'meta must be an object')\n\n// Test: Response body have meta the props of get api\nconst jsonMeta = response.body.data.meta\n    \nexpect(jsonMeta).to.have.all.keys('totalPage','total','page')\nexpect(jsonMeta.totalPage).to.be.a('number', 'totalPage must be a number')\nexpect(jsonMeta.total).to.be.a('number', 'total must be a number')\nexpect(jsonMeta.page).to.be.a('number', 'page must be a number')\nexpect(jsonMeta.totalPage).to.be.at.least(0)\nexpect(jsonMeta.total).to.be.at.least(0)\nexpect(jsonMeta.page).to.be.at.least(0)\n\n// Test: Products item have valid key and value\nconst jsonProd = response.body.data.products\n    \nfor(let i = 0; i < jsonProd.length; i++){\n    expect(jsonProd[i].id).to.be.a('string')\n    expect(jsonProd[i].code).to.be.a('string')\n    expect(jsonProd[i].description).to.satisfy(function(val) {\n        return typeof val == 'string' || val == null;\n    });\n    expect(jsonProd[i].price).to.be.a('number')\n    expect(jsonProd[i].cost).to.be.a('number')\n    expect(jsonProd[i].stock).to.be.a('number')\n    expect(jsonProd[i].sale).to.be.a('number')\n    expect(jsonProd[i].purchase).to.be.a('number')\n    expect(jsonProd[i].category_name).to.be.a('string')\n}\n\n// Test: Products item have valid UUID format    \nfor(let i = 0; i < jsonProd.length; i++){\n    expect(jsonProd[i].id).that.has.lengthOf(36)\n    expect((jsonProd[i].id.match(/-/g) || []).length).to.equal(4)\n}",
+              "err": {
+                "message": "AssertionError: expected { totalPages: 1, total: '1', page: 1 } to have keys 'totalPage', 'total', and 'page'",
+                "estack": "AssertionError: expected { totalPages: 1, total: '1', page: 1 } to have keys 'totalPage', 'total', and 'page'\n    at Context.<anonymous> (file:///Users/leonardhorsitanggang/Documents/GitHub/sanbercode-qa_automation-pekan3-batch-59-Leonardho/product_module_test.js:94:38)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)",
+                "diff": " [\n   \"page\"\n   \"total\"\n-   \"totalPages\"\n+   \"totalPage\"\n ]\n"
+              },
+              "uuid": "b15d89f6-c118-483a-a8b1-0f4c65b9d172",
+              "parentUUID": "c8a8372e-88d9-426b-a294-3f419aef9ec3",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Should update a product",
+              "fullTitle": "Product Module Should update a product",
+              "timedOut": false,
+              "duration": 122,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const payload = {\n    category_id : global.testData.categories,\n    code: faker.string.nanoid(9).toUpperCase(),\n    name: faker.commerce.product(),\n    price: faker.number.int({min:1000,max:10000}).toString(),\n    cost: faker.number.int({min:1000,max:10000}).toString(),\n    stock: faker.number.int({min:1,max:99}).toString()\n};\nconsole.log(payload)\nconst accessToken = global.testData.authentication\nconst productId = global.testData.product\nconst startTime = Date.now()\nconst response = await request.put(`/products/${productId}`)\n    .send(payload)\n    .set('Accept', 'application/json')\n    .set('Authorization', `Bearer ${accessToken}`)\n    .expect('Content-Type', /json/)\nconst responseTime = Date.now() - startTime\n// Test: Status code must be equal to 200\nexpect(response.status).to.equal(200, 'Status code must be equal to 200')\n// Test: Response time is less than 5000ms\nexpect(responseTime).to.be.below(5000, 'Response time must be below 5000ms')\n// Test: Response must be valid and have a body\nexpect(response.body).to.exist\nexpect(response.body).to.be.an('object')\n// Test: Response body must have valid format with status, message, and data\nexpect(response.body).to.have.all.keys('status', 'message', 'data')\nexpect(response.body.status).to.equal('success', 'Status must be \"success\"')\nexpect(response.body.status).to.be.a('string', 'Status must be a string')\nexpect(response.body.message).to.be.a('string', 'Message must be a string')\nexpect(response.body.data).to.be.an('object', 'Data must be an object')\n// Test:Response data is exist and have product name\nconst jsonData = response.body.data \nexpect(jsonData.name).to.be.a('string')",
+              "err": {},
+              "uuid": "623b014e-20b7-40f8-b6a2-17f80daf3665",
+              "parentUUID": "c8a8372e-88d9-426b-a294-3f419aef9ec3",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Should delete a product",
+              "fullTitle": "Product Module Should delete a product",
+              "timedOut": false,
+              "duration": 123,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const accessToken = global.testData.authentication\nconst productId = global.testData.product\nconst startTime = Date.now()\nconst response = await request.delete(`/products/${productId}`)\n    .set('Accept', 'application/json')\n    .set('Authorization', `Bearer ${accessToken}`)\nconst responseTime = Date.now() - startTime\n// Test: Status code must be equal to 200\nexpect(response.status).to.equal(200, 'Status code must be equal to 200')\n// Test: Response time is less than 5000ms\nexpect(responseTime).to.be.below(5000, 'Response time must be below 5000ms')\n// Test: Response must be valid and have a body\nexpect(response.body).to.exist\nexpect(response.body).to.be.an('object')\n// Test: Response body must have valid format with status and message\nexpect(response.body).to.have.all.keys('status', 'message')\nexpect(response.body.status).to.equal('success', 'Status must be \"success\"')\nexpect(response.body.status).to.be.a('string', 'Status must be a string')\nexpect(response.body.message).to.be.a('string', 'Message must be a string')",
+              "err": {},
+              "uuid": "fb8b3375-59e9-4115-b833-af9d0e80c538",
+              "parentUUID": "c8a8372e-88d9-426b-a294-3f419aef9ec3",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "fd72208f-fef2-4451-b5f1-bf19adf7ae00",
+            "623b014e-20b7-40f8-b6a2-17f80daf3665",
+            "fb8b3375-59e9-4115-b833-af9d0e80c538"
+          ],
+          "failures": [
+            "b15d89f6-c118-483a-a8b1-0f4c65b9d172"
+          ],
+          "pending": [],
+          "skipped": [],
+          "duration": 563,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "10.7.3"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": null,
+      "version": "6.2.0"
+    }
+  }
+}

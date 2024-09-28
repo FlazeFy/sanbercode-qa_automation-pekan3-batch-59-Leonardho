@@ -2,6 +2,7 @@ import supertest from 'supertest'
 import { expect } from 'chai'
 import { faker } from '@faker-js/faker'
 const request = supertest('https://kasir-api.zelz.my.id')
+import { describe, it } from 'mocha'
 
 describe('Categories Module', () => {
     global.testData.categories = {};
@@ -85,9 +86,9 @@ describe('Categories Module', () => {
         const jsonData = response.body.data.meta
 
         expect(jsonData).to.have.all.keys('totalPage','total','page')
-        expect(jsonData.totalPage).to.be.a('number')
-        expect(jsonData.total).to.be.a('number')
-        expect(jsonData.page).to.be.a('number')
+        expect(jsonData.totalPage).to.be.a('number', 'totalPage must be a number')
+        expect(jsonData.total).to.be.a('number', 'total must be a number')
+        expect(jsonData.page).to.be.a('number', 'page must be a number')
         expect(jsonData.totalPage).to.be.at.least(0)
         expect(jsonData.total).to.be.at.least(0)
         expect(jsonData.page).to.be.at.least(0)

@@ -2,6 +2,7 @@ import supertest from 'supertest'
 import { expect } from 'chai'
 import { faker } from '@faker-js/faker'
 const request = supertest('https://kasir-api.zelz.my.id')
+import { describe, it } from 'mocha'
 
 describe('Product Module', () => {
     global.testData.product = {};
@@ -81,19 +82,19 @@ describe('Product Module', () => {
         const jsonData = response.body
     
         expect(jsonData).to.have.all.keys('status','data')
-        expect(jsonData.status).to.eql("success")
-        expect(jsonData.status).to.be.a('string')
-        expect(jsonData.data).to.be.an('object')
-        expect(jsonData.data.products).to.be.an('array')
-        expect(jsonData.data.meta).to.be.an('object')
+        expect(jsonData.status).to.eql("success", 'Status must be "success"')
+        expect(jsonData.status).to.be.a('string', 'Status must be a string')
+        expect(jsonData.data).to.be.an('object', 'data must be an object')
+        expect(jsonData.data.products).to.be.an('array', 'product must be an array')
+        expect(jsonData.data.meta).to.be.an('object', 'meta must be an object')
         
         // Test: Response body have meta the props of get api
         const jsonMeta = response.body.data.meta
     
         expect(jsonMeta).to.have.all.keys('totalPage','total','page')
-        expect(jsonMeta.totalPage).to.be.a('number')
-        expect(jsonMeta.total).to.be.a('number')
-        expect(jsonMeta.page).to.be.a('number')
+        expect(jsonMeta.totalPage).to.be.a('number', 'totalPage must be a number')
+        expect(jsonMeta.total).to.be.a('number', 'total must be a number')
+        expect(jsonMeta.page).to.be.a('number', 'page must be a number')
         expect(jsonMeta.totalPage).to.be.at.least(0)
         expect(jsonMeta.total).to.be.at.least(0)
         expect(jsonMeta.page).to.be.at.least(0)
